@@ -1,7 +1,7 @@
 import pandas as pd
 
-from invoice import Invoice, InvoiceLine
-from detector import BaseDetector, SumMismatch, VatError, NearDuplicate, AmountOutlier
+from .invoice import Invoice, InvoiceLine
+from .detector import BaseDetector, SumMismatch, VatError, NearDuplicate, AmountOutlier
 
 class TrainPipeline:
     def __init__(self):

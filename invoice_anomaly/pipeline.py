@@ -1,6 +1,6 @@
 import pandas as pd
-from invoice import Invoice, InvoiceLine
-from detector import BaseDetector, SumMismatch, VatError, NearDuplicate, AmountOutlier
+from .invoice import Invoice, InvoiceLine
+from .detector import BaseDetector, SumMismatch, VatError, NearDuplicate, AmountOutlier
 
 class AnomalyPipeline:
     def __init__(self):
@@ -139,7 +139,7 @@ class AnomalyPipeline:
         return types, details
 
 
-    def create_predictions(self, types, details):
+    def create_predictions(self, types, details, output_path):
         rows = []
 
         for inv_id in types.keys():
@@ -166,5 +166,7 @@ class AnomalyPipeline:
 
         pred = pred_details[["invoice_id", "is_anomaly", "anomaly_types"]]
 
-        pred_details.to_csv("predictions_with_details.csv", index=False)
-        pred.to_csv("predictions.csv", index=False)
+        pred.to_csv(output_path, index=False)
+
+        output_path = output_path.replace(".csv", "_with_details.csv")
+        pred_details.to_csv(output_path, index=False)

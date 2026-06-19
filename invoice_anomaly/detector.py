@@ -4,6 +4,7 @@ from math import floor
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 import joblib
+import os
 
 
 class BaseDetector:
@@ -143,8 +144,11 @@ class AmountOutlier:
         self.fitted = False
 
 
-    def load(self, path):
-        self.model = joblib.load(path)
+    def load(self, filename):
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        model_path = os.path.join(current_dir, filename)
+
+        self.model = joblib.load(model_path)
         self.fitted = True
 
 
@@ -193,7 +197,10 @@ class AmountOutlier:
         self.model.fit(X, y)
         self.fitted = True
 
-        joblib.dump(self.model, "amount_outlier_model.pkl")
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        model_path = os.path.join(current_dir, "amount_outlier_model.pkl")
+        joblib.dump(self.model, model_path)
+
 
     def detect(self, invoices):
         if not self.fitted:
